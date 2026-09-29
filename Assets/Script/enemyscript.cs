@@ -43,8 +43,8 @@ public class enemyscript : MonoBehaviour
         // gets player position, enemy faces player
 
 
-        print("player x = " + px);
-        print("enemy x = " + ex);
+        //print("player x = " + px);
+        //print("enemy x = " + ex);
 
         //detect left side of object
         if( left == false && direction < 0 )

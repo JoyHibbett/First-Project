@@ -52,7 +52,6 @@ public class PlayerScript : MonoBehaviour
             anim.SetBool("crouch", false);
         }
         //player animation
-        print(moveVel.y);
 
         isGrounded = RayCollisionCheck(0, 0);
     }
@@ -75,7 +74,6 @@ public class PlayerScript : MonoBehaviour
 
         if (hit.collider != null)
         {
-            print("Player has collided with Ground layer");
             hitColor = Color.green;
             hitSomething = true;
         }
