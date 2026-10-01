@@ -14,6 +14,7 @@ public class PlayerScript : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask groundLayerMask;
     bool result;
+    helper helper;
     
 
     void Start()
@@ -25,13 +26,15 @@ public class PlayerScript : MonoBehaviour
         isGrounded = false;
         anim = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        helper = gameObject.AddComponent<helper>();
     }
+
 
     // Update is called once per frame
     void Update()
     {
         Jump();
-        FlipSprite();
+        helper.FlipSprite(true);
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
         //lets player move
         rb.linearVelocity = new Vector2(moveVel.x *5, rb.linearVelocity.y);
@@ -54,6 +57,7 @@ public class PlayerScript : MonoBehaviour
         //player animation
 
         isGrounded = RayCollisionCheck(0, 0);
+        
     }
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
@@ -85,18 +89,7 @@ public class PlayerScript : MonoBehaviour
 
 
 
-    void FlipSprite()
-    {
-        if (rb.linearVelocityX < -0.1f)
-        {
-            sr.flipX = true;
-        }
-        if (rb.linearVelocityX > 0.1f)
-        {
-            sr.flipX = false;
-        }
-
-    }
+    
     //flips player in walking direction
     void Jump()
     {

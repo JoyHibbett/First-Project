@@ -10,6 +10,7 @@ public class enemyscript : MonoBehaviour
     float direction;
     Rigidbody2D rb;
     public LayerMask groundLayerMask;
+    helper helper;
 
 
     void Start()
@@ -18,36 +19,18 @@ public class enemyscript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         direction = 2;
         groundLayerMask = LayerMask.GetMask("Ground");
+        helper = gameObject.AddComponent<helper>();
     }
     void Update()
     {
-
-        float px, ex;
+        helper.FlipSprite(false);
+        helper.GoBoom();
         bool left, right;
 
         left = RayCollisionCheck(-0.5f, 0);
         right = RayCollisionCheck(0.5f, 0);
 
-        px = player.transform.position.x;
-        ex = transform.position.x;
-
-        if (px < ex)
-        {
-            sr.flipX = false;
-        }
-        else
-        {
-            sr.flipX = true;
-        }
-
-        // gets player position, enemy faces player
-
-
-        //print("player x = " + px);
-        //print("enemy x = " + ex);
-
-        //detect left side of object
-        if( left == false && direction < 0 )
+        if (left == false && direction < 0)
         {
             direction = 2;
         }
@@ -57,11 +40,10 @@ public class enemyscript : MonoBehaviour
             direction = -2;
         }
 
-
         rb.linearVelocityX = direction;
-
         //if (dir < 0 && left == false) ;
     }
+ 
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
     {
