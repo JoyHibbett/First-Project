@@ -1,6 +1,6 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 public class PlayerScript : MonoBehaviour
 {
@@ -15,7 +15,9 @@ public class PlayerScript : MonoBehaviour
     public LayerMask groundLayerMask;
     bool result;
     helper helper;
-    
+    InputAction attackAction;
+    public GameObject weapon;
+
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class PlayerScript : MonoBehaviour
         anim = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
         helper = gameObject.AddComponent<helper>();
+        attackAction = InputSystem.actions.FindAction("Attack");
     }
 
 
@@ -34,10 +37,13 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         Jump();
+
+        Shoot();
+
         helper.FlipSprite(true);
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
         //lets player move
-        rb.linearVelocity = new Vector2(moveVel.x *5, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(moveVel.x * 5, rb.linearVelocity.y);
         if (rb.linearVelocityX != 0)
         {
             anim.SetBool("walk", true);
@@ -57,7 +63,7 @@ public class PlayerScript : MonoBehaviour
         //player animation
 
         isGrounded = RayCollisionCheck(0, 0);
-        
+
     }
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
@@ -89,7 +95,7 @@ public class PlayerScript : MonoBehaviour
 
 
 
-    
+
     //flips player in walking direction
     void Jump()
     {
@@ -116,5 +122,34 @@ public class PlayerScript : MonoBehaviour
     }
 
 
+//*****************************************************************************
+    void Shoot()
+    {
+        Vector2 moveVel = moveAction.ReadValue<Vector2>();
+       
+
+        
+
+        if (attackAction.WasPressedThisFrame())
+        {
+            // Instantiate the bullet at the position and rotation of the player
+            GameObject clone;
+            clone = Instantiate(weapon, transform.position, transform.rotation);
+
+            // for 2D, get the rigidbody component
+            Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+
+
+            // set the position close to the player
+            rb.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z + 1);
+
+            if (sr.flipX == false )
+                rb.linearVelocity = new Vector2(15, 0);
+            else
+                rb.linearVelocity = new Vector2(-15, 0);
+        }
+    }
+    //****************************************************************************
 }
+
 
