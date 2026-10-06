@@ -7,17 +7,16 @@ public class PlayerScript : MonoBehaviour
     //variables
     InputAction moveAction;
     InputAction jumpAction;
+    InputAction attackAction;
     Rigidbody2D rb;
-    bool isGrounded;
     Animator anim;
     SpriteRenderer sr;
+    helper helper;
     public LayerMask groundLayer;
     public LayerMask groundLayerMask;
-    bool result;
-    helper helper;
-    InputAction attackAction;
     public GameObject weapon;
-
+    bool isGrounded;
+    bool result;
 
     void Start()
     {
@@ -32,17 +31,21 @@ public class PlayerScript : MonoBehaviour
         attackAction = InputSystem.actions.FindAction("Attack");
     }
 
-
-    // Update is called once per frame
     void Update()
     {
+        Move();
+
         Jump();
 
         Shoot();
 
         helper.FlipSprite(true);
+
+        isGrounded = RayCollisionCheck(0, 0);
+    }
+    void Move()
+    {
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
-        //lets player move
         rb.linearVelocity = new Vector2(moveVel.x * 5, rb.linearVelocity.y);
         if (rb.linearVelocityX != 0)
         {
@@ -60,13 +63,9 @@ public class PlayerScript : MonoBehaviour
         {
             anim.SetBool("crouch", false);
         }
-        //player animation
-
-        isGrounded = RayCollisionCheck(0, 0);
-
     }
 
-    public bool RayCollisionCheck(float xoffs, float yoffs)
+public bool RayCollisionCheck(float xoffs, float yoffs)
     {
         float rayLength = 0.5f; // length of raycast
         bool hitSomething = false;
@@ -87,14 +86,9 @@ public class PlayerScript : MonoBehaviour
             hitColor = Color.green;
             hitSomething = true;
         }
-        // draw a debug ray to show ray's position
-        // You need to enable gizmos in th e editor to see these
         Debug.DrawRay(transform.position + offset, Vector2.down * rayLength, hitColor);
         return hitSomething;
     }
-
-
-
 
     //flips player in walking direction
     void Jump()
@@ -104,7 +98,6 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
         }
     }
-
 
     bool IsGrounded()
     {
@@ -121,8 +114,7 @@ public class PlayerScript : MonoBehaviour
         return false;
     }
 
-
-//*****************************************************************************
+    // sparkle attack
     void Shoot()
     {
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
@@ -136,20 +128,16 @@ public class PlayerScript : MonoBehaviour
             GameObject clone;
             clone = Instantiate(weapon, transform.position, transform.rotation);
 
-            // for 2D, get the rigidbody component
             Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
-
 
             // set the position close to the player
             rb.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z + 1);
 
+            //shoots the weapon the way the player is facing
             if (sr.flipX == false )
                 rb.linearVelocity = new Vector2(15, 0);
             else
                 rb.linearVelocity = new Vector2(-15, 0);
         }
     }
-    //****************************************************************************
 }
-
-
