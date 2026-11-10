@@ -32,8 +32,8 @@ public class enemyscript : MonoBehaviour
     void TurnAround()
     {
         bool left, right;
-        left = RayCollisionCheck(-0.5f, 0, 0);
-        right = RayCollisionCheck(0.5f, 0, 0);
+        left = RayCollisionCheck(-0.5f, -1);
+        right = RayCollisionCheck(0.5f, -1);
 
         if (left == false && direction < 0)
         {
@@ -52,8 +52,8 @@ public class enemyscript : MonoBehaviour
     void TurnAroundBump()
     {
         bool upleft, upright;
-        upleft = RayCollisionCheck(-0.7f, 0, 90f);
-        upright = RayCollisionCheck(0.7f, 0, -90f);
+        upleft = RayCollisionCheck(-0.7f, 0);
+        upright = RayCollisionCheck(0.7f, 0);
 
         if (upleft == false && direction < 0)
         {
@@ -69,55 +69,37 @@ public class enemyscript : MonoBehaviour
         //if (dir < 0 && left == false) ;
     }
 
-
-    public bool RayCollisionCheck(float xoffs, float yoffs, float zoffs)
+    public bool RayCollisionCheck(float xoffs, float yoffs)
     {
         float rayLength = 0.5f; // length of raycast
-        float sideRayLength = 0.2f;
         bool hitSomething = false;
 
         // convert x and y offset into a Vector3 
-        Vector3 offset = new Vector3(xoffs, yoffs, zoffs);
-        Vector3 offsetr = new Vector3(xoffs, yoffs, zoffs);
-        Vector3 offsetl = new Vector3(xoffs, yoffs, zoffs);
+        Vector3 offset = new Vector3(xoffs, (float)(yoffs - 0.5), 0);
 
-        //cast a ray starting at the sprite's position
-        RaycastHit2D hitdown;
-        RaycastHit2D hitright;
-        RaycastHit2D hitleft;
+        //cast a ray downward starting at the sprite's position
+        RaycastHit2D hit;
 
-        hitdown = Physics2D.Raycast(transform.position + offset, Vector2.down, rayLength, groundLayerMask);
-        hitright = Physics2D.Raycast(transform.position + offsetr, Vector2.right, sideRayLength, groundLayerMask);
-        hitleft = Physics2D.Raycast(transform.position + offsetl, Vector2.left, sideRayLength, groundLayerMask);
+        hit = Physics2D.Raycast(transform.position + offset, Vector2.down, rayLength, groundLayerMask);
 
-        Color hitdownColor = Color.red;
-        Color hitrightColor = Color.red;
-        Color hitleftColor = Color.red;
+        Color hitColor = Color.red;
 
 
-        if (hitdown.collider != null)
+        if (hit.collider != null)
         {
-            hitdownColor = Color.green;
+            hitColor = Color.green;
             hitSomething = true;
         }
-        if (hitright.collider != null)
-        {
-            hitrightColor = Color.green;
-            hitSomething = true;
-        }
-        if (hitleft.collider != null)
-        {
-            hitleftColor = Color.green;
-            hitSomething = true;
-        }
-        // draw a debug ray to show ray's position
-        // You need to enable gizmos in the editor to see these
-        Debug.DrawRay(transform.position + offset, Vector2.down * rayLength, hitdownColor);
-        return hitSomething;
-        Debug.DrawRay(transform.position + offsetr, Vector2.right * rayLength, hitdownColor);
-        return hitSomething;
-        Debug.DrawRay(transform.position + offsetl, Vector2.left * rayLength, hitdownColor);
+        Debug.DrawRay(transform.position + offset, Vector2.down * rayLength, hitColor);
         return hitSomething;
     }
-
 }
+
+
+        //public bool CheckGround()
+        // {
+        // bool leftRay = RayCollisionCheck(-0.2f, 0);
+
+        // }
+
+    

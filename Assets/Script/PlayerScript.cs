@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,7 @@ public class PlayerScript : MonoBehaviour
     public LayerMask groundLayerMask;
     public GameObject weapon;
     bool isGrounded;
+    bool jumping;
     bool result;
 
     void Start()
@@ -25,6 +27,7 @@ public class PlayerScript : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         isGrounded = false;
+        jumping = false;
         anim = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
         helper = gameObject.AddComponent<helper>();
@@ -37,11 +40,17 @@ public class PlayerScript : MonoBehaviour
 
         Jump();
 
+        Fly();
+
         Shoot();
+
+        Landed();
 
         helper.FlipSprite(true);
 
         isGrounded = RayCollisionCheck(0, 0);
+
+
     }
     void Move()
     {
@@ -55,14 +64,6 @@ public class PlayerScript : MonoBehaviour
         {
             anim.SetBool("walk", false);
         }
-        if (moveVel.y < -0.1f)
-        {
-            anim.SetBool("crouch", true);
-        }
-        else
-        {
-            anim.SetBool("crouch", false);
-        }
     }
 
 public bool RayCollisionCheck(float xoffs, float yoffs)
@@ -71,7 +72,7 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
         bool hitSomething = false;
 
         // convert x and y offset into a Vector3 
-        Vector3 offset = new Vector3(xoffs, yoffs, 0);
+        Vector3 offset = new Vector3(xoffs, (float)(yoffs - 0.5), 0);
 
         //cast a ray downward starting at the sprite's position
         RaycastHit2D hit;
@@ -89,13 +90,32 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
         Debug.DrawRay(transform.position + offset, Vector2.down * rayLength, hitColor);
         return hitSomething;
     }
-
     //flips player in walking direction
+
     void Jump()
     {
         if ((jumpAction.WasPressedThisFrame()) && (isGrounded == true))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 8);
+            jumping = true; 
+        }
+
+        if (jumping == true )
+        {
+            anim.SetBool("fly", true);
+        }
+        else
+        {
+            anim.SetBool("fly", false);
+        }
+
+    }
+
+    void Fly()
+    {
+        if (Keyboard.current.fKey.wasPressedThisFrame && isGrounded == true)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 11);
         }
     }
 
@@ -119,9 +139,6 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
     {
         Vector2 moveVel = moveAction.ReadValue<Vector2>();
        
-
-        
-
         if (attackAction.WasPressedThisFrame())
         {
             // Instantiate the bullet at the position and rotation of the player
@@ -139,5 +156,14 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
             else
                 rb.linearVelocity = new Vector2(-15, 0);
         }
+    }
+
+    void Landed()
+    {
+        if( jumping && isGrounded && rb.linearVelocityY < 0 )
+        {
+            jumping = false;
+        }
+
     }
 }
