@@ -115,7 +115,7 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
     {
         if (Keyboard.current.fKey.wasPressedThisFrame && isGrounded == true)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 11);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
         }
     }
 
@@ -148,7 +148,7 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
             Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
 
             // set the position close to the player
-            rb.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z + 1);
+            rb.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
 
             //shoots the weapon the way the player is facing
             if (sr.flipX == false )

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class enemyscript : MonoBehaviour
 {
@@ -17,18 +18,21 @@ public class enemyscript : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        direction = 2;
+        direction = -2;
         groundLayerMask = LayerMask.GetMask("Ground");
         helper = gameObject.AddComponent<helper>();
     }
     void Update()
     {
-        helper.FlipSprite(false);
+        helper.FlipSprite(true);
         helper.GoBoom();
-        TurnAround();
-        TurnAroundBump();
+        //TurnAround();
+        //TurnAroundBump();
+        Patrol();
+        UpPatrol();
     }
 
+    /*
     void TurnAround()
     {
         bool left, right;
@@ -68,10 +72,69 @@ public class enemyscript : MonoBehaviour
         rb.linearVelocityX = direction;
         //if (dir < 0 && left == false) ;
     }
+    */
+
+    void Patrol()
+    {
+        rb.linearVelocityX = direction;
+
+        bool hit =false;
+        //work out which way I am travelling
+
+        if( direction > 0 )
+        {
+            hit = RayCollisionCheck(0.7f, 0);
+            if ( hit == false )
+            {
+                direction = -direction;
+                return;
+            }
+        }
+
+        if (direction < 0)
+        {
+            hit = RayCollisionCheck(-0.7f, 0);
+
+            if (hit == false)
+            {
+                direction = -direction;
+            }
+
+        }
+    }
+
+    void UpPatrol()
+    {
+        rb.linearVelocityX = direction;
+
+        bool uphit = false;
+      
+        if (direction > 0)
+        {
+            uphit = RayCollisionCheck(1.1f, 0.5f);
+           // uphit = Physics2D.Raycast(Vector2.right);
+
+            if (uphit == true )
+            {
+                direction = -direction;
+            }
+        }
+
+        if (direction < 0)
+        {
+            uphit = RayCollisionCheck(-1.1f, 0.5f);
+
+            if (uphit == true)
+            {
+                direction = -direction;
+            }
+
+        }
+    }
 
     public bool RayCollisionCheck(float xoffs, float yoffs)
     {
-        float rayLength = 0.5f; // length of raycast
+        float rayLength = 1.0f; // length of raycast
         bool hitSomething = false;
 
         // convert x and y offset into a Vector3 
@@ -96,10 +159,13 @@ public class enemyscript : MonoBehaviour
 }
 
 
-        //public bool CheckGround()
-        // {
-        // bool leftRay = RayCollisionCheck(-0.2f, 0);
+//public bool CheckGround()
+// {
+// bool leftRay = RayCollisionCheck(-0.2f, 0);
 
-        // }
-
-    
+// }
+//RaycastHit2D hitright;
+//float sideRayLength = 0.2f;
+//bool RayCollisionCheck(float xoffs, float yoffs, float zoffs);
+//Vector3 offsetr = new Vector3(xoffs, yoffs, zoffs);
+//hitright = Physics2D.Raycast(transform.position + offsetr, Vector2.right, sideRayLength, groundLayerMask);
