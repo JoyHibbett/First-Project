@@ -24,7 +24,7 @@ public class enemyscript : MonoBehaviour
     }
     void Update()
     {
-        helper.FlipSprite(true);
+        helper.FlipSprite(false);
         helper.GoBoom();
         //TurnAround();
         //TurnAroundBump();
