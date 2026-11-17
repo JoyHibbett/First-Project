@@ -40,8 +40,6 @@ public class PlayerScript : MonoBehaviour
 
         Jump();
 
-        Fly();
-
         Shoot();
 
         Landed();
@@ -96,7 +94,7 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
     {
         if ((jumpAction.WasPressedThisFrame()) && (isGrounded == true))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 8);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
             jumping = true; 
         }
 
@@ -109,14 +107,6 @@ public bool RayCollisionCheck(float xoffs, float yoffs)
             anim.SetBool("fly", false);
         }
 
-    }
-
-    void Fly()
-    {
-        if (Keyboard.current.fKey.wasPressedThisFrame && isGrounded == true)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
-        }
     }
 
     bool IsGrounded()

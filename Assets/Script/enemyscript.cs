@@ -32,49 +32,65 @@ public class enemyscript : MonoBehaviour
         UpPatrol();
     }
 
-    /*
-    void TurnAround()
+    public void OnCollisionEnter2D(Collision2D other)
     {
-        bool left, right;
-        left = RayCollisionCheck(-0.5f, -1);
-        right = RayCollisionCheck(0.5f, -1);
-
-        if (left == false && direction < 0)
+        if (other.gameObject.tag == "Player")
         {
-            direction = 2;
+            GameOver.playerDied = true;
         }
 
-        if (right == false && direction > 0)
+        if (other.gameObject.tag == "AttackTag")
         {
-            direction = -2;
+            Destroy(gameObject);
+            print("wsg");
         }
-
-        rb.linearVelocityX = direction;
-        //if (dir < 0 && left == false) ;
     }
 
-    void TurnAroundBump()
-    {
-        bool upleft, upright;
-        upleft = RayCollisionCheck(-0.7f, 0);
-        upright = RayCollisionCheck(0.7f, 0);
+    
 
-        if (upleft == false && direction < 0)
-        {
-            direction = 2;
-        }
+            /*
+            void TurnAround()
+            {
+                bool left, right;
+                left = RayCollisionCheck(-0.5f, -1);
+                right = RayCollisionCheck(0.5f, -1);
 
-        if (upright == false && direction > 0)
-        {
-            direction = -2;
-        }
+                if (left == false && direction < 0)
+                {
+                    direction = 2;
+                }
 
-        rb.linearVelocityX = direction;
-        //if (dir < 0 && left == false) ;
-    }
-    */
+                if (right == false && direction > 0)
+                {
+                    direction = -2;
+                }
 
-    void Patrol()
+                rb.linearVelocityX = direction;
+                //if (dir < 0 && left == false) ;
+            }
+
+            void TurnAroundBump()
+            {
+                bool upleft, upright;
+                upleft = RayCollisionCheck(-0.7f, 0);
+                upright = RayCollisionCheck(0.7f, 0);
+
+                if (upleft == false && direction < 0)
+                {
+                    direction = 2;
+                }
+
+                if (upright == false && direction > 0)
+                {
+                    direction = -2;
+                }
+
+                rb.linearVelocityX = direction;
+                //if (dir < 0 && left == false) ;
+            }
+            */
+
+            void Patrol()
     {
         rb.linearVelocityX = direction;
 

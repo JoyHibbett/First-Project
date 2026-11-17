@@ -28,6 +28,20 @@ public class helper : MonoBehaviour
             Destroy(gameObject);
         }
     }
+}
+
+/*    public void PlayerDie()
+    {
+        PlayerDie = false
+        gameObject.SetActive(true);
+        GameObject clone;
+        clone = Instantiate(gameoverscreen, transform.position, transform.rotation);
+
+        Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+
+        // set the position close to the player
+        rb.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+    }
 
 
 
@@ -81,6 +95,4 @@ public class helper : MonoBehaviour
         return hitSomething;
         Debug.DrawRay(transform.position + offsetl, Vector2.left * rayLength, hitdownColor);
         return hitSomething;
-
-    }
-}
+*/
