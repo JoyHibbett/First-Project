@@ -39,6 +39,10 @@ public class enemyscript : MonoBehaviour
             GameOver.playerDied = true;
         }
 
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
         if (other.gameObject.tag == "AttackTag")
         {
             Destroy(gameObject);
@@ -90,7 +94,7 @@ public class enemyscript : MonoBehaviour
             }
             */
 
-            void Patrol()
+    void Patrol()
     {
         rb.linearVelocityX = direction;
 

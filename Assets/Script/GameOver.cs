@@ -27,7 +27,6 @@ public class GameOver : MonoBehaviour
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }
-
     }
 }
 /*

@@ -4,28 +4,30 @@ public class coincloudScript : MonoBehaviour
 {
     //variables
     public GameObject coinPrefab;
+    bool madeCoin;
 
     void Start()
     {
+        madeCoin = false;
         
     }
 
     void Update()
     {
-
+    
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && madeCoin == false )
         {
+            madeCoin=true;
+
             GameObject coin;
             coin = Instantiate(coinPrefab, transform.position, transform.rotation);
 
-            Rigidbody2D rb = coin.GetComponent<Rigidbody2D>();
-
-            // set the position close to the player
-            rb.transform.position = new Vector3(transform.position.x, transform.position.y + 2500, transform.position.z + 1);
+            coin.transform.position = new Vector3(transform.position.x, transform.position.y+5, transform.position.z);
         }
     }
+
 }
