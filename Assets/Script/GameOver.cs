@@ -24,6 +24,7 @@ public class GameOver : MonoBehaviour
 
         if (playerDied == true && Keyboard.current.eKey.wasPressedThisFrame)
         {
+            coincounterui.score = 0;
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }

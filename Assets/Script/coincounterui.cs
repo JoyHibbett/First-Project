@@ -1,21 +1,30 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class coincounterui : MonoBehaviour
 {
     [SerializeField]
-    private text _scoreText;
+    public TMP_Text scoreText;
 
     [SerializeField]
-    private int _score;
+    public static int score;
 
     void Start()
     {
+        scoreText = GetComponent<TMP_Text>();
+
         
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        scoreText.text = "Coins: " + score.ToString();
+
+    }
+
+    public static void AddScore(int coinPoint)
+    {
+        score += coinPoint;
     }
 }

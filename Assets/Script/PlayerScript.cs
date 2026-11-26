@@ -66,7 +66,7 @@ public class PlayerScript : MonoBehaviour
 
 public bool RayCollisionCheck(float xoffs, float yoffs)
     {
-        float rayLength = 0.5f; // length of raycast
+        float rayLength = 0.9f; // length of raycast
         bool hitSomething = false;
 
         // convert x and y offset into a Vector3 
